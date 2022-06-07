@@ -8,13 +8,14 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 import { borderRadius } from "@mui/system";
 import StripeCheckout from "react-stripe-checkout";
-import {toast} from 'react-toastify';
-import GooglePayButton from '@google-pay/button-react';
+import { toast } from "react-toastify";
+import GooglePayButton from "@google-pay/button-react";
 
-const CartItems = ({ fdata, counter, setCounter }) => {
+const CartItems = ({ fdata, counter, setCounter, details, setDetails }) => {
   const URL = "https://food-delivery150.herokuapp.com";
   const [isOpen, setIsOpen] = useState(false);
   const [cartData, setCartData] = useContext(store);
+  // const [details, setDetails] = useContext(store);
 
   const handleRemove = (id) => {
     setCartData((prev) => prev.filter((item) => item._id !== id));
@@ -69,14 +70,14 @@ const CartItems = ({ fdata, counter, setCounter }) => {
           </h2>
         </div>
       ) : (
-        cartData.map((item, index) => {
+        cartData.map((item) => {
           return (
             <>
               <div
                 className="card mb-3"
                 style={{ height: 250, border: "1px solid purple" }}
               >
-                <div className="row g-0" key={index}>
+                <div className="row g-0">
                   <div className="col-md-4">
                     <img
                       src={item.image}
@@ -115,58 +116,56 @@ const CartItems = ({ fdata, counter, setCounter }) => {
       )}
       {cartData.length != 0 ? (
         <div className="mb-2 d-flex justify-content-end align-items-center">
-          <GooglePayButton 
+          <GooglePayButton
             environment="TEST"
             paymentRequest={{
               apiVersion: 2,
               apiVersionMinor: 0,
               allowedPaymentMethods: [
                 {
-                  type: 'CARD',
+                  type: "CARD",
                   parameters: {
-                    allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-                    allowedCardNetworks: ['MASTERCARD', 'VISA'],
+                    allowedAuthMethods: ["PAN_ONLY", "CRYPTOGRAM_3DS"],
+                    allowedCardNetworks: ["MASTERCARD", "VISA"],
                   },
                   tokenizationSpecification: {
-                    type: 'PAYMENT_GATEWAY',
+                    type: "PAYMENT_GATEWAY",
                     parameters: {
-                      gateway: 'example',
-                      gatewayMerchantId: 'exampleGatewayMerchantId',
+                      gateway: "example",
+                      gatewayMerchantId: "exampleGatewayMerchantId",
                     },
                   },
                 },
               ],
               merchantInfo: {
-                merchantId: 'BCR2DN4TUCHK2TA',
-                merchantName: 'Jagadeesh Foods',
+                merchantId: "BCR2DN4TUCHK2TA",
+                merchantName: "Jagadeesh Foods",
               },
               transactionInfo: {
-                totalPriceStatus: 'FINAL',
-                totalPriceLabel: 'Total',
+                totalPriceStatus: "FINAL",
+                totalPriceLabel: "Total",
                 totalPrice: `${sum}`,
-                currencyCode: 'INR',
-                countryCode: 'IN',
+                currencyCode: "INR",
+                countryCode: "IN",
               },
               shippingAddressRequired: true,
-              callbackIntents: ['SHIPPING_ADDRESS','PAYMENT_AUTHORIZATION']
+              callbackIntents: ["SHIPPING_ADDRESS", "PAYMENT_AUTHORIZATION"],
             }}
-            onLoadPaymentData={paymentRequest => {
-              console.log('success', paymentRequest);
+            onLoadPaymentData={(paymentRequest) => {
+              console.log("success", paymentRequest);
             }}
-            onPaymentAuthorized={paymentData => {
-              console.log('Payment Authorized Data:', paymentData)
-              return {transactionState: 'SUCCESS'}
+            onPaymentAuthorized={(paymentData) => {
+              console.log("Payment Authorized Data:", paymentData);
+              return { transactionState: "SUCCESS" };
             }}
-            onPaymentDataChanged={paymentData => {
-              console.log('On Payment Data Changed:', paymentData)
-              return { }
+            onPaymentDataChanged={(paymentData) => {
+              console.log("On Payment Data Changed:", paymentData);
+              return {};
             }}
-            existingPaymentMethodRequired = 'false'
-            buttonColor = 'black'
-            buttonType = 'order'
-           
+            existingPaymentMethodRequired="false"
+            buttonColor="black"
+            buttonType="order"
           />
-          
         </div>
       ) : null}
 

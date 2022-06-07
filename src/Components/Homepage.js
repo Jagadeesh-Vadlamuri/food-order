@@ -8,12 +8,12 @@ import authService from "../Services/auth";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { store } from "../App";
 
-const Homepage = () => {
+const Homepage = ({details, setDetails}) => {
   const URL = "https://food-delivery150.herokuapp.com";
   // const [email, setEmail] = useState("")
   // const [password, setPassword] = useState("")
   const navigate = useNavigate();
-  const [details, setDetails] = useContext(store);
+  // const [details, setDetails] = useContext(store);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -21,6 +21,12 @@ const Homepage = () => {
     },
     onSubmit: async (values) => {
       try {
+        if(values.email=='admin@gmail.com'){
+          // navigate(`/getItems`)
+          setDetails({
+            email: values.email
+          })
+        }
         await authService.login(values.email, values.password).then(
           () => {
             navigate(`/getItems`);

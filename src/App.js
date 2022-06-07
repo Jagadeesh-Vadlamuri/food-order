@@ -38,7 +38,7 @@ const App = () => {
 
   return (
     <store.Provider value={[cartData, setCartData]}>
-      <Navbar counter={counter} setCounter={setCounter} />
+      <Navbar counter={counter} setCounter={setCounter} details={details} setDetails={setDetails}/>
       <Routes>
         <Route
           path="/cartItems"
@@ -47,6 +47,8 @@ const App = () => {
               fdata={formik}
               counter={counter}
               setCounter={setCounter}
+              details={details} 
+              setDetails={setDetails}
             />
           }
         />
@@ -59,6 +61,8 @@ const App = () => {
               datum={datum}
               counter={counter}
               setCounter={setCounter}
+              details={details}
+              setDetails={setDetails}
             />
           }
         />

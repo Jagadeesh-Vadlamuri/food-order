@@ -5,11 +5,10 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import authService from "../Services/auth";
 import axios from "axios";
 
-
-const Navbar = ({ counter, setCounter }) => {
+const Navbar = ({ counter, setCounter, details, setDetails }) => {
   const URL = "https://food-delivery150.herokuapp.com";
   const [cartData, setCartData] = useContext(store);
-  const [details, setDetails] = useContext(store);
+  // const [details, setDetails] = useContext(store);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,7 +21,7 @@ const Navbar = ({ counter, setCounter }) => {
   let convertedUrl = currentUrl.split("/");
   console.log(currentUrl.split("/")[convertedUrl.length - 1]);
 
-  console.log(details)
+  console.log(details);
   return (
     <div>
       <nav
@@ -30,35 +29,51 @@ const Navbar = ({ counter, setCounter }) => {
         style={{ backgroundColor: "purple" }}
       >
         <div className="container-fluid d-flex justify-content-around align-items-center">
-          
           <Link
             className="btn btn-light mt-3"
             to="/createItem"
             style={
               currentUrl.split("/")[convertedUrl.length - 1] == "signUp" ||
               currentUrl.split("/")[convertedUrl.length - 1] == "" ||
-              currentUrl.split("/")[convertedUrl.length - 1] == "createItem"
+              details.email !== "admin@gmail.com"
                 ? { marginLeft: 70, marginBottom: 15, visibility: "hidden" }
                 : { marginLeft: 70, marginBottom: 15 }
             }
           >
             Create Item
           </Link>
+
           <a className="navbar-brand ">
-            {/* <Link className="text-light text-decoration-none" to="/getItems"> */}
-              <h1 className="text-light" style={{marginLeft: 100}}>
-                <strong>JAGADEESH FOODS</strong>
-              </h1>
-            {/* </Link> */}
+            <h1 className="text-light" style={{ marginLeft: 100 }}>
+              <strong>JAGADEESH FOODS</strong>
+            </h1>
           </a>
-          {/* <h2 className="text-light">{details[0][0]+" "+details[0][1]}</h2> */}
+          {/* {
+            details.email=='admin@gmail.com' ? <h4 className="text-light">Admin</h4> : null
+          } */}
+          <div style={{ marginRight: -60 }}>
+            <h5
+              className="text-light"
+              style={
+                details.email !== "admin@gmail.com" ||
+                currentUrl.split("/")[convertedUrl.length - 1] == "signUp" ||
+                currentUrl.split("/")[convertedUrl.length - 1] == ""
+                  ? { visibility: "hidden" }
+                  : {  }
+              }
+            >
+              Admin
+            </h5>
+          </div>
+
           <Link
             className="btn btn-outline-light mt-auto d-flex flex-row"
             style={
               currentUrl.split("/")[convertedUrl.length - 1] == "signUp" ||
-              currentUrl.split("/")[convertedUrl.length - 1] == "" 
-                ? { marginRight: -75, marginBottom: 15, visibility: "hidden" }
-                : { marginRight: -75, marginBottom: 15 }
+              currentUrl.split("/")[convertedUrl.length - 1] == ""
+                ? // (details.email!='Admin' && details.password!='Admin')
+                  { marginRight: -35, marginBottom: 15, visibility: "hidden" }
+                : { marginRight: -35, marginBottom: 15 }
             }
             to="/cartItems"
           >
@@ -73,8 +88,13 @@ const Navbar = ({ counter, setCounter }) => {
             onClick={handleLogout}
             style={
               currentUrl.split("/")[convertedUrl.length - 1] == "signUp" ||
-              currentUrl.split("/")[convertedUrl.length - 1] == ""              
-                ? { marginRight: 50, marginBottom: 15, marginLeft: -45, visibility: "hidden" }
+              currentUrl.split("/")[convertedUrl.length - 1] == ""
+                ? {
+                    marginRight: 50,
+                    marginBottom: 15,
+                    marginLeft: -45,
+                    visibility: "hidden",
+                  }
                 : { marginRight: 50, marginBottom: 15, marginLeft: -45 }
             }
           >
